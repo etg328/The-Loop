@@ -56,6 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <p><strong>${article.source}</strong></p>
         <p>${article.line1}</p>
         <p>${article.line2}</p>
+        <p>${article.line3}</p>
       `;
 
       articlesDiv.appendChild(card);

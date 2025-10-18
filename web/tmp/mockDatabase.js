@@ -5,36 +5,54 @@ const mockDatabase = {
     {
       title: "Global Markets React to Fed Decision",
       line1: "Rates drop by 5%",
-      line2: "Expect increase in gas prices"
+      line2: "Expect increase in gas prices",
+      line3: "This is the next line"
     },
     {
       title: "Tech Giants Report Record Earnings",
       line1: "Apple and Microsoft exceed Q3 expectations",
-      line2: "Analysts predict continued growth into 2026"
+      line2: "Analysts predict continued growth into 2026",
+      line3: "This is the next line"
+    },
+    {
+      title: "Nick Voswinckle crashes out",
+      line1: "The Sauquon Scrappy Scrapper can not scrape",
+      line2: "We are not going to win the hackathon",
+      line3: "This is the next line"
     }
   ],
   "Wall Street Journal": [
     {
       title: "Oil Prices Climb as Demand Rebounds",
       line1: "U.S. production struggles to keep up",
-      line2: "Investors eye OPEC’s next move"
+      line2: "Investors eye OPEC’s next move",
+      line3: "This is the next line"
     },
     {
       title: "Manufacturing Sector Hits Record High",
       line1: "Strong output across Midwest",
-      line2: "Supply chains continue gradual recovery"
+      line2: "Supply chains continue gradual recovery",
+      line3: "This is the next line"
+    },
+    {
+      title: "Owen is a guy",
+      line1: "The Sauquon Scrappy Scrapper can not scrape",
+      line2: "We are not going to win the hackathon",
+      line3: "This is the next line"
     }
   ],
   "ESPN": [
     {
       title: "Lakers Triumph in Overtime Thriller",
       line1: "LeBron leads with 32 points",
-      line2: "Coach praises team resilience"
+      line2: "Coach praises team resilience",
+      line3: "This is the next line"
     },
     {
       title: "NFL Week 6 Power Rankings Released",
       line1: "Eagles reclaim top spot after big win",
-      line2: "Analysts debate playoff favorites"
+      line2: "Analysts debate playoff favorites",
+      line3: "This is the next line"
     }
   ]
 };
