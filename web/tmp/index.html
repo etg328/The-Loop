@@ -3,72 +3,88 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Popup Checklist</title>
+  <title>Source Selection</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
       margin: 0;
+      background-color: #f9f9f9;
     }
 
-    /* Dimmed background overlay */
+    /* Overlay */
     #popup {
       display: none;
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background-color: rgba(0, 0, 0, 0.6);
+      background-color: rgba(0, 0, 0, 0.45);
       justify-content: center;
       align-items: center;
+      z-index: 1000;
     }
 
     /* Popup box */
     #popup-content {
-      background: #fff;
-      width: 500px;       /* fixed width */
-      height: 400px;      /* fixed height */
-      border-radius: 12px;
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
-      padding: 20px;
+      background: #ffffff;
+      width: 520px;
+      height: 380px;
+      border-radius: 10px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+      padding: 24px 28px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
     }
 
     #popup-content h2 {
       margin-top: 0;
+      margin-bottom: 15px;
+      font-size: 22px;
+      font-weight: 600;
+      color: #1a1a1a;
       text-align: center;
+      letter-spacing: 0.5px;
     }
 
     /* Checklist area */
     #checklist {
       flex: 1;
-      overflow-y: auto;   /* scrolls if list too long */
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      background: #fafafa;
+      overflow-y: auto;
+      border: 1px solid #d1d1d1;
+      border-radius: 6px;
+      background-color: #fafafa;
+      padding: 14px 16px;
     }
 
     label {
-      display: block;
-      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 15px;
+      color: #333;
     }
 
-    /* Close button */
+    input[type="checkbox"] {
+      margin-right: 10px;
+      accent-color: #4d5864; /* more modern checkbox look */
+    }
+
+    /* Confirm button */
     .close-btn {
       align-self: center;
       background-color: #4d5864;
-      color: white;
+      color: #ffffff;
       border: none;
-      padding: 10px 18px;
+      padding: 10px 24px;
       border-radius: 6px;
       cursor: pointer;
-      font-size: 16px;
-      margin-top: 15px;
+      font-size: 15px;
+      letter-spacing: 0.5px;
+      transition: background-color 0.2s ease;
+      margin-top: 18px;
     }
 
     .close-btn:hover {
-      background-color: #0056b3;
+      background-color: #3b434d;
     }
   </style>
 </head>
@@ -76,23 +92,23 @@
 
   <div id="popup">
     <div id="popup-content">
-      <h2>Select Sources</h2>
+      <h2>Select News Sources</h2>
       <form id="checklist">
-        <label><input type="checkbox"> New York Times</label>
-        <label><input type="checkbox"> Wall Street Journal</label>
+        <label><input type="checkbox"> The New York Times</label>
+        <label><input type="checkbox"> The Wall Street Journal</label>
         <label><input type="checkbox"> ESPN</label>
       </form>
-      <button class="close-btn">Confirm</button>
+      <button class="close-btn">Confirm Selection</button>
     </div>
   </div>
 
   <script>
-    // Show popup when the page loads
+    // Show popup on page load
     window.addEventListener('load', () => {
       document.getElementById('popup').style.display = 'flex';
     });
 
-    // Close popup when "Close" button clicked
+    // Close popup when Confirm is clicked
     document.querySelector('.close-btn').addEventListener('click', () => {
       document.getElementById('popup').style.display = 'none';
     });
