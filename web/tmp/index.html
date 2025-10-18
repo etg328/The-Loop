@@ -65,7 +65,7 @@
 
     input[type="checkbox"] {
       margin-right: 10px;
-      accent-color: #4d5864; /* more modern checkbox look */
+      accent-color: #4d5864;
     }
 
     /* Confirm button */
@@ -94,25 +94,16 @@
     <div id="popup-content">
       <h2>Select News Sources</h2>
       <form id="checklist">
-        <label><input type="checkbox"> The New York Times</label>
-        <label><input type="checkbox"> The Wall Street Journal</label>
-        <label><input type="checkbox"> ESPN</label>
+        <label><input type="checkbox" value="nytimes"> The New York Times</label>
+        <label><input type="checkbox" value="wsj"> The Wall Street Journal</label>
+        <label><input type="checkbox" value="espn"> ESPN</label>
       </form>
       <button class="close-btn">Confirm Selection</button>
     </div>
   </div>
 
-  <script>
-    // Show popup on page load
-    window.addEventListener('load', () => {
-      document.getElementById('popup').style.display = 'flex';
-    });
-
-    // Close popup when Confirm is clicked
-    document.querySelector('.close-btn').addEventListener('click', () => {
-      document.getElementById('popup').style.display = 'none';
-    });
-  </script>
+  <!-- External script -->
+  <script src="loopScripts.js"></script>
 
 </body>
 </html>
