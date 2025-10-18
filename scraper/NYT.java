@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NYT {
-    private static final int MAX_PAGES = 10; // scrape up to 10 pages
+    private static final int MAX_PAGES = 2; // scrape up to 10 pages
 
     public static NewsObj[] getNews(String sectionUrl) throws Exception {
         var results = new ArrayList<NewsObj>();
