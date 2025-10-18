@@ -69,6 +69,15 @@ const mockDatabase = {
       line3: "This is the next line",
       link: "https://www.google.com"
     }
+  ],
+  "BBC": [
+    {
+      title: "Nick able to scrape the BBC",
+      line1: "Owen loves BBC",
+      line2: "Nick Cant handle the BBC",
+      line3: "Ethan thinks the BBC is small",
+      link: "https://www.google.com"
+    }
   ]
 };
 
