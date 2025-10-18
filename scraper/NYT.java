@@ -6,99 +6,143 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
-/**
- * NYT scraper – fetches the NYTimes.com homepage and returns an array of newsObj.
- * Each newsObj contains the title, the full text scraped from the linked article, and the article URL.
- */
 public class NYT {
-    private static final String BASE_URL = "https://www.nytimes.com/";
+    //https://www.nytimes.com/section/us
+    //https://www.nytimes.com/
 
-    // ====== SELECTORS ======
-    // You can narrow this later if you want specific sections
-    private static final String ARTICLE_CARD_SEL = "article"; 
+    private static final String BASE_URL = "https://www.nytimes.com/section/us";
 
-    private static final String TITLE_SEL = "#site-content > div > div > div > div:nth-child(1) > div:nth-child(1) > div.css-1p2nb0z.e1ppw5w20 > div:nth-child(1) > div:nth-child(2) > div.story-wrapper.css-a4nlbf > div > div:nth-child(2) > div.css-1wzkfo3 > div.css-cfnhvx > a > div > p";
-    private static final String LINK_SEL  = "#site-content > div > div > div > div:nth-child(1) > div:nth-child(1) > div.css-1p2nb0z.e1ppw5w20 > div:nth-child(1) > div:nth-child(2) > div.story-wrapper.css-a4nlbf > div > div:nth-child(2) > div.css-1wzkfo3 > div.css-cfnhvx > a";
-    // ========================
-
-    /**
-     * Fetches the NYT homepage and returns an array of newsObj.
-     * Each object's description is scraped from the linked article page.
-     */
     public static NewsObj[] getNews() throws Exception {
         List<NewsObj> results = new ArrayList<>();
 
         Document doc = Jsoup.connect(BASE_URL)
-                .userAgent("Mozilla/5.0")
-                .timeout(10000)
+                .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                         + "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+                .referrer("https://www.google.com")
+                .timeout(20000)
                 .get();
 
-        Elements cards = doc.select(ARTICLE_CARD_SEL);
+        // Pass 1: anchors that wrap an h3/h2 (most robust)
+        Elements anchors = doc.select(
+                "#site-content a[href]:has(h3), #site-content a[href]:has(h2)"
+        );
+        System.out.println("DEBUG: anchors (has h3/h2) = " + anchors.size());
 
-        for (Element card : cards) {
-            String title = textOrNull(card.selectFirst(TITLE_SEL));
-            String href  = linkOrNull(card.selectFirst(LINK_SEL));
+        // Fallback: headline tags with a child link
+        if (anchors.isEmpty()) {
+            anchors = doc.select("#site-content h3 a[href], #site-content h2 a[href]");
+            System.out.println("DEBUG: fallback anchors (h3 a / h2 a) = " + anchors.size());
+        }
 
-            // Skip if missing critical info
+        // Last-resort: any headline-looking link in main
+        if (anchors.isEmpty()) {
+            anchors = doc.select("main a[href]:has(h3), main a[href]:has(h2), main h3 a[href], main h2 a[href]");
+            System.out.println("DEBUG: last-resort anchors (main) = " + anchors.size());
+        }
+
+        // Deduplicate by absolute URL while preserving order
+        Set<String> seen = new LinkedHashSet<>();
+
+        for (Element a : anchors) {
+            // Title from nearest h3/h2 text, else the link text
+            String title = textOrNull(a.selectFirst("h3, h2"));
+            if (isBlank(title)) title = textOrNull(a);
+
+            String href = absHref(a);
             if (isBlank(title) || isBlank(href)) continue;
 
-            // Fetch article page and extract full text
+            // Normalize relative
+            if (href.startsWith("/")) href = "https://www.nytimes.com" + href;
+
+            // Basic filtering: skip nav/utility links
+            if (href.contains("#") || href.endsWith(".jpg") || href.endsWith(".png")) continue;
+
+            // Only keep each URL once
+            if (!seen.add(href)) continue;
+
+            // Pull article body as description (can be long)
             String desc = fetchArticleText(href);
 
             results.add(new NewsObj(title, desc, href));
 
-            // polite delay between requests to avoid overwhelming NYT
-            Thread.sleep(1000);
+            // Be polite
+            Thread.sleep(400);
         }
 
+        System.out.println("DEBUG: Built " + results.size() + " NewsObj items");
         return results.toArray(new NewsObj[0]);
     }
 
-    /**
-     * Connects to an individual NYT article and returns the combined text content.
-     * You can later adjust the selector for paragraphs or body sections.
-     */
     private static String fetchArticleText(String url) {
-        try {
-            Document article = Jsoup.connect(url)
-                    .userAgent("Mozilla/5.0")
-                    .timeout(10000)
-                    .get();
+    try {
+        Document article = Jsoup.connect(url)
+                .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+                .referrer("https://www.google.com")
+                .timeout(25000)
+                .get();
 
-            // Basic paragraph selector (NYT uses <p> heavily for article content)
-            Elements paragraphs = article.select("section[name='articleBody'] p, article p");
-            StringBuilder sb = new StringBuilder();
+        // 1) Your described structure: companion columns → container → paragraphs
+        //    Example: [data-testid="companionColumn-0"] div.css-53u6y8 p.css-ac37hb.evys1bk0
+        Elements paragraphs = article.select(
+                "div[data-testid^=companionColumn-] div.css-53u6y8 p.css-ac37hb.evys1bk0"
+        );
 
-            for (Element p : paragraphs) {
-                String text = p.text().trim();
-                if (!text.isEmpty()) sb.append(text).append(" ");
-            }
-
-            return sb.toString().trim();
-        } catch (Exception e) {
-            System.err.println("Failed to fetch article text for: " + url + " — " + e.getMessage());
-            return "";
+        // 2) Fallbacks for other common NYT article bodies
+        if (paragraphs.isEmpty()) {
+            paragraphs = article.select(
+                // older/newer articleBody names
+                "[data-testid=article-body] p, " +
+                "section[name=articleBody] p, " +
+                "div[name=articleBody] p, " +
+                // generic article/main paragraph fallbacks
+                "article p, main p"
+            );
         }
+
+        // 3) Final sanity fallback: any <p> within #site-content that looks like body text
+        if (paragraphs.isEmpty()) {
+            paragraphs = article.select("#site-content p");
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (Element p : paragraphs) {
+            String text = p.text().trim();
+            if (text.isEmpty()) continue;
+            if (looksLikeBoilerplate(text)) continue;   // skip subscribe promos, “Advertisement”, etc.
+            sb.append(text).append("\n\n");
+        }
+
+        return sb.toString().trim();
+    } catch (Exception e) {
+        System.err.println("Failed to fetch article text for: " + url + " — " + e.getMessage());
+        return "";
+    }
+}
+
+// Skip obvious non-body lines
+private static boolean looksLikeBoilerplate(String t) {
+    String s = t.toLowerCase();
+    return s.equals("advertisement")
+        || s.startsWith("subscribe")
+        || s.startsWith("sign up")
+        || s.startsWith("read more")
+        || s.startsWith("listen")
+        || s.startsWith("supported by")
+        || s.startsWith("credit:");
+}
+    private static String absHref(Element a) {
+        String abs = trimOrNull(a.absUrl("href"));
+        if (!isBlank(abs)) return abs;
+        String raw = trimOrNull(a.attr("href"));
+        return raw == null ? "" : raw;
     }
 
-    // ---------- helpers ----------
     private static String textOrNull(Element el) {
         return el == null ? null : trimOrNull(el.text());
-    }
-
-    private static String linkOrNull(Element linkEl) {
-        if (linkEl == null) return null;
-
-        String url = trimOrNull(linkEl.absUrl("href"));
-        if (!isBlank(url)) return url;
-
-        String raw = trimOrNull(linkEl.attr("href"));
-        if (isBlank(raw)) return null;
-
-        if (raw.startsWith("/")) return "https://www.nytimes.com" + raw;
-        return raw;
     }
 
     private static String trimOrNull(String s) {
