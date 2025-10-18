@@ -3,12 +3,137 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Loop</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>News Dashboard</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      margin: 0;
+      background-color: #f5f6f7;
+      color: #222;
+    }
+
+    /* Popup background overlay */
+    #popup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    /* Popup box */
+    #popup-content {
+      background: #fff;
+      width: 500px;
+      height: 400px;
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+      padding: 25px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    #popup-content h2 {
+      text-align: center;
+      margin-top: 0;
+      color: #2c3e50;
+    }
+
+    /* Checklist box */
+    #checklist {
+      flex: 1;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 15px;
+      background-color: #f9f9f9;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 12px;
+      font-size: 16px;
+    }
+
+    .close-btn {
+      align-self: center;
+      background-color: #2f3e46;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+
+    .close-btn:hover {
+      background-color: #1f2a30;
+    }
+
+    /* Top-right box */
+    #selected-sources-box {
+      position: fixed;
+      top: 15px;
+      right: 20px;
+      background: #f8f9fa;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px 15px;
+      font-size: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    #change-btn {
+      margin-top: 6px;
+      background: #4a6070;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    #change-btn:hover {
+      background: #374956;
+    }
+
+    /* Article cards */
+    #articles {
+      padding: 80px 20px 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .article-card {
+      border: 1px solid #d0d0d0;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 12px;
+      background-color: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .article-card h4 {
+      margin: 0 0 5px;
+      font-size: 17px;
+      color: #2d3748;
+    }
+
+    .article-card p {
+      margin: 3px 0;
+      color: #555;
+    }
+  </style>
 </head>
 <body>
 
-  <!-- Popup overlay -->
+  <!-- Popup -->
   <div id="popup">
     <div id="popup-content">
       <h2>Select News Sources</h2>
@@ -21,15 +146,17 @@
     </div>
   </div>
 
-  <!-- Small top-right summary box -->
-  <div id="selection-box">
-    <h4>Your Sources</h4>
-    <ul id="selection-list">
-      <li>No selections yet</li>
-    </ul>
-    <button id="edit-btn">Change Sources</button>
+  <!-- Top-right small info box -->
+  <div id="selected-sources-box">
+    <div id="selected-sources">No sources selected</div>
+    <button id="change-btn">Change Sources</button>
   </div>
 
-  <script src="loopScripts.js"></script>
+  <!-- Articles section -->
+  <div id="articles">
+    <h3>Latest Articles</h3>
+  </div>
+
+  <script type="module" src="./loopScripts.js"></script>
 </body>
 </html>
