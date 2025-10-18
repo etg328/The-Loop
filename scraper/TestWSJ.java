@@ -1,25 +1,43 @@
 package com.example.webscraper;
 
+import java.util.ArrayList;
+
 public class TestWSJ {
     public static void main(String[] args) {
+        // WSJ section RSS feeds
+        String[] feeds = {
+            "https://feeds.a.dj.com/rss/RSSWorldNews.xml",   // World
+            "https://feeds.a.dj.com/rss/RSSUSNews.xml",      // US
+            "https://feeds.a.dj.com/rss/RSSMarketsMain.xml"  // Markets / Business
+        };
+
+        ArrayList<NewsObj> allNews = new ArrayList<>();
+
         try {
-            // Option A: default “Latest” feed
-            NewsObj[] latest = WSJ.getNews();
-            System.out.println("Latest feed count: " + latest.length);
+            for (String feedUrl : feeds) {
+                System.out.println("\n=== WSJ FEED: " + feedUrl + " ===");
 
-            // Option B: pick a specific section feed
-            String worldFeed = "https://feeds.a.dj.com/rss/RSSWorldNews.xml";
-            NewsObj[] world = WSJ.getNewsFromFeed(worldFeed);
-            System.out.println("World feed count: " + world.length);
+                // Scrape feed
+                NewsObj[] items = WSJ.getNewsFromFeed(feedUrl);
+                System.out.println("Articles in this feed: " + items.length);
 
-            // Print a few
-            int show = Math.min(latest.length, 5);
-            for (int i = 0; i < show; i++) {
-                var n = latest[i];
-                System.out.println("\n[" + (i+1) + "] " + n.getTitle());
-                System.out.println("Desc: " + n.getDesc());
-                System.out.println("Link: " + n.getLink());
+                // Add to overall list
+                for (NewsObj n : items) allNews.add(n);
+
+                // Show top 3 from this feed
+                int show = Math.min(items.length, 3);
+                for (int i = 0; i < show; i++) {
+                    NewsObj n = items[i];
+                    System.out.println("\n[" + (i + 1) + "] " + n.getTitle());
+                    System.out.println("Desc: " + n.getDesc());
+                    System.out.println("Link: " + n.getLink());
+                }
             }
+
+            System.out.println("\n=== SUMMARY ===");
+            System.out.println("Total WSJ sections scraped: " + feeds.length);
+            System.out.println("Total articles collected: " + allNews.size());
+
         } catch (Exception e) {
             System.err.println("WSJ RSS scrape failed: " + e.getMessage());
         }

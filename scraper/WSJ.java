@@ -9,43 +9,39 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 
 public class WSJ {
-    // Use a WSJ RSS feed. Swap this with any WSJ feed you prefer.
-    // Examples you can try:
-    //  - Latest:   https://feeds.a.dj.com/rss/RSSWSJLatestNews.xml
-    //  - World:    https://feeds.a.dj.com/rss/RSSWorldNews.xml
-    //  - US:       https://feeds.a.dj.com/rss/RSSUSNews.xml
-    //  - Business: https://feeds.a.dj.com/rss/RSSMarketsMain.xml
-    private static final String DEFAULT_RSS =
-            "https://feeds.a.dj.com/rss/RSSWorldNews.xml";
 
-    /** Scrape via RSS (recommended). */
-    public static NewsObj[] getNews() throws Exception {
-        return getNewsFromFeed(DEFAULT_RSS);
-    }
-
-    /** Scrape from a specific WSJ RSS feed URL. */
+    /**
+     * Fetches articles from a WSJ RSS feed and returns them as an array of NewsObj.
+     * Works for any section feed (World, US, Markets, etc.).
+     */
     public static NewsObj[] getNewsFromFeed(String feedUrl) throws Exception {
         var results = new ArrayList<NewsObj>();
 
-        // Fetch as XML with Jsoup’s XML parser
+        System.out.println("Fetching WSJ feed: " + feedUrl);
+
+        // Fetch the RSS XML and parse it
         Document feed = Jsoup.connect(feedUrl)
-                .userAgent("Mozilla/5.0")
+                .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
                 .timeout(20000)
                 .ignoreContentType(true)
-                .parser(Parser.xmlParser())
+                .parser(Parser.xmlParser()) // XML mode for RSS
                 .get();
 
+        // Each <item> is one article
         Elements items = feed.select("rss > channel > item");
+        System.out.println("DEBUG: Found " + items.size() + " items in feed");
+
         for (Element item : items) {
             String title = textOrNull(item.selectFirst("title"));
             String link  = textOrNull(item.selectFirst("link"));
-            String desc  = textOrNull(item.selectFirst("description")); // brief summary
+            String desc  = textOrNull(item.selectFirst("description")); // short summary
 
             if (isBlank(title) || isBlank(link)) continue;
+
             results.add(new NewsObj(title, nullToEmpty(desc), link));
         }
 
-        System.out.println("DEBUG: WSJ RSS items collected = " + results.size());
+        System.out.println("DEBUG: Built " + results.size() + " NewsObj items from " + feedUrl);
         return results.toArray(new NewsObj[0]);
     }
 
@@ -55,9 +51,11 @@ public class WSJ {
         String t = el.text();
         return (t == null || t.trim().isEmpty()) ? null : t.trim();
     }
+
     private static boolean isBlank(String s) {
         return s == null || s.trim().isEmpty();
     }
+
     private static String nullToEmpty(String s) {
         return s == null ? "" : s.trim();
     }
