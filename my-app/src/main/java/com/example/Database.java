@@ -23,7 +23,7 @@ import java.util.Map;
  * Enhanced Client. See the EnhancedQueryRecords example.
  */
 public class Database {
-    public static ArrayList<Article> get(String source) {
+    public static ArrayList<Article> get(String[] sources) { 
         final String usage = """
 
                 Usage:
@@ -35,32 +35,36 @@ public class Database {
                     partitionKeyVal - The value of the partition key that should match (for example, Famous Band).
                 """;
 
-        String tableName = "news";
-        String partitionKeyName = "source";
-        String partitionKeyVal = source;
-
-        // For more information about an alias, see:
-        // https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.ExpressionAttributeNames.html
-        String partitionAlias = "#a";
-
-        System.out.format("Querying %s", tableName);
-        System.out.println("");
-        Region region = Region.US_EAST_1;
-        DynamoDbClient ddb = DynamoDbClient.builder()
-                .region(region)
-                .build();
-
-        QueryResponse response = queryTable(ddb, tableName, partitionKeyName, partitionKeyVal, partitionAlias);
-        ddb.close();
-
         ArrayList<Article> list = new ArrayList<>();
-        for (Map<String, AttributeValue> map : response.items()) {
-            Article article = new Article(
-                map.get("title").s(),
-                map.get("text").s(),
-                map.get("link").s()
-            );
-            list.add(article);
+
+        for (String source : sources) {
+            String tableName = "news";
+            String partitionKeyName = "source";
+            String partitionKeyVal = source;
+
+            // For more information about an alias, see:
+            // https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.ExpressionAttributeNames.html
+            String partitionAlias = "#a";
+
+            System.out.format("Querying %s", tableName);
+            System.out.println("");
+            Region region = Region.US_EAST_1;
+            DynamoDbClient ddb = DynamoDbClient.builder()
+                    .region(region)
+                    .build();
+
+            QueryResponse response = queryTable(ddb, tableName, partitionKeyName, partitionKeyVal, partitionAlias);
+            ddb.close();
+
+            for (Map<String, AttributeValue> map : response.items()) {
+                Article article = new Article(
+                    map.get("source").s(),
+                    map.get("title").s(),
+                    map.get("text").s(),
+                    map.get("link").s()
+                );
+                list.add(article);
+            }
         }
 
         return list;
