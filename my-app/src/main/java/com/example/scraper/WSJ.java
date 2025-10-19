@@ -31,7 +31,11 @@ public class WSJ {
         Elements items = feed.select("rss > channel > item");
         System.out.println("DEBUG: Found " + items.size() + " items in feed");
 
+        int numOfObj = 0;
         for (Element item : items) {
+            if(numOfObj >5){
+                break;
+            }
             String title = textOrNull(item.selectFirst("title"));
             String link  = textOrNull(item.selectFirst("link"));
             String desc  = textOrNull(item.selectFirst("description")); // short summary
@@ -39,6 +43,7 @@ public class WSJ {
             if (isBlank(title) || isBlank(link)) continue;
 
             results.add(new NewsObj(title, nullToEmpty(desc), link, "WSJ"));
+            numOfObj++;
         }
 
         System.out.println("DEBUG: Built " + results.size() + " NewsObj items from " + feedUrl);

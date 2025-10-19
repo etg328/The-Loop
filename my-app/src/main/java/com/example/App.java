@@ -22,7 +22,7 @@ public class App {
             
             SummarizeArticle.summarize(title, desc, link, source);
             try{
-                Thread.sleep(20000);
+                Thread.sleep(52000);
             }
             catch(InterruptedException e){
                 e.printStackTrace();

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NYT {
-    private static final int MAX_PAGES = 2; // scrape up to 10 pages
+    private static final int MAX_PAGES = 1; // scrape up to 10 pages
 
     public static NewsObj[] getNews(String sectionUrl) throws Exception {
         var results = new ArrayList<NewsObj>();
@@ -36,8 +36,11 @@ public class NYT {
                     System.out.println("No articles found on page " + page + " — stopping this section.");
                     break;
                 }
-
+                int numOfObj = 0;
                 for (Element li : lis) {
+                    if(numOfObj >5){
+                        break;
+                    }
                     Element article = li.selectFirst("article");
                     if (article == null) continue;
 
@@ -57,6 +60,7 @@ public class NYT {
                     String desc = textOrNull(descEl);
 
                     results.add(new NewsObj(title, nullToEmpty(desc), href, "NYT"));
+                    numOfObj++;
                 }
 
                 pagesRead++;
