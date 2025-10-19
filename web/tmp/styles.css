@@ -113,12 +113,12 @@ input[type="checkbox"] {
 /* Centered cursive title */
 #site-title {
   position: fixed;
-  top: 200px;
+  top: 20px;
   left: 50%;
   transform: translateX(-50%);
-  font-family: "Brush Script MT", "Lucida Handwriting", cursive;
-  font-size: 256px;
-  color: rgb(0, 0, 0);
+  font-family: "Lobster", "Brush Script MT", cursive;
+  font-size: 100px;
+  color: rgb(7, 6, 6);
   text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
   z-index: 999;
   user-select: none;
