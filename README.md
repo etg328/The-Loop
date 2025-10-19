@@ -1,9 +1,24 @@
 # The-Loop
 Stay in the loop with quick and easy access to world news at your fingertips.
-
-To run front end: npx http-server -c-1
-
-javac -cp ".:jsoup-1.17.2.jar" -d out NewsObj.java NYT.java APNews.java ESPNNews.java WSJ.java Test.java
+Access brief bullet points on recent news from NYT, Wall Street Journal, AP, and ESPN
 
 
-java  -cp "out:jsoup-1.17.2.jar" com.example.webscraper.Test
+
+
+How to run: 
+
+To update the database: 
+
+cd my-app
+mvn clean compile exec:java -Dexec.mainClass="com.example.bedrockdemo.App"
+
+To run the backend:
+
+On the AWS server VS Code
+mvn clean compile exec:java
+
+To run front end: 
+
+cd web
+cd tmp
+npx http-server -c-1
