@@ -1,19 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Loop</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>News Dashboard</title>
+
   <style>
     body {
       font-family: "Segoe UI", Roboto, Arial, sans-serif;
       margin: 0;
-      background-image: url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80"); /* working image */
-      background-size: cover; 
+      background-image: url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e");
+      background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       background-attachment: fixed;
       color: #222;
+    }
+
+    /* === Centered Cursive Title === */
+    #site-title {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: "Brush Script MT", "Lucida Handwriting", cursive;
+      font-size: 100px;
+      color: rgb(7, 6, 6);
+      text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      user-select: none;
     }
 
     /* Popup background overlay */
@@ -84,7 +99,7 @@
       position: fixed;
       top: 15px;
       right: 20px;
-      background: rgba(248, 249, 250, 0.9);
+      background: #f8f9fa;
       border: 1px solid #ccc;
       border-radius: 8px;
       padding: 10px 15px;
@@ -107,9 +122,34 @@
       background: #374956;
     }
 
+    /* Top-left dropdown menu */
+    #background-menu {
+      position: fixed;
+      top: 15px;
+      left: 20px;
+      background-color: rgba(255, 255, 255, 0.85);
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px 15px;
+      font-size: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      color: rgb(3, 0, 0);
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    #background-select {
+      padding: 4px 8px;
+      border-radius: 5px;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
     /* Article cards */
     #articles {
-      padding: 80px 20px 20px;
+      padding: 120px 20px 20px; /* More padding for title space */
       max-width: 800px;
       margin: 0 auto;
     }
@@ -119,7 +159,7 @@
       border-radius: 10px;
       padding: 15px;
       margin-bottom: 12px;
-      background-color: rgba(140, 100, 255, 0.85);
+      background-color: #fff;
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
 
@@ -137,6 +177,9 @@
 </head>
 <body>
 
+  <!-- Centered Title -->
+  <div id="site-title">The Loop</div>
+
   <!-- Popup -->
   <div id="popup">
     <div id="popup-content">
@@ -145,11 +188,20 @@
         <label><input type="checkbox" value="New York Times"> New York Times</label>
         <label><input type="checkbox" value="Wall Street Journal"> Wall Street Journal</label>
         <label><input type="checkbox" value="ESPN"> ESPN</label>
-        <label><input type="checkbox" value="BBC"> BBC</label>
-        <label><input type="checkbox" value="Associated Press"> Associated Press</label>
       </form>
       <button class="close-btn">Confirm</button>
     </div>
+  </div>
+
+  <!-- Top-left dropdown menu -->
+  <div id="background-menu">
+    <label for="background-select">Background:</label>
+    <select id="background-select">
+      <option value="default">Default</option>
+      <option value="beach">Beach</option>
+      <option value="city">City</option>
+      <option value="secret">Secret</option>
+    </select>
   </div>
 
   <!-- Top-right small info box -->
@@ -161,10 +213,6 @@
   <!-- Articles section -->
   <div id="articles">
     <h3>Latest Articles</h3>
-    <div class="article-card">
-      <h4>Sample Headline</h4>
-      <p>Example description of a news article here...</p>
-    </div>
   </div>
 
   <script type="module" src="./loopScripts.js"></script>
