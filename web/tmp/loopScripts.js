@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const selectedSourcesDiv = document.getElementById("selected-sources");
   const changeBtn = document.getElementById("change-btn");
   const articlesDiv = document.getElementById("articles");
+  const backgroundSelect = document.getElementById("background-select");
+  const body = document.body;
 
   // Show popup on initial load
   window.addEventListener("load", () => {

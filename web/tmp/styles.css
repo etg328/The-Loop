@@ -110,6 +110,20 @@ input[type="checkbox"] {
   text-align: center;
   color: #2e3b4e;
 }
+/* Centered cursive title */
+#site-title {
+  position: fixed;
+  top: 200px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: "Brush Script MT", "Lucida Handwriting", cursive;
+  font-size: 256px;
+  color: rgb(0, 0, 0);
+  text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  user-select: none;
+}
+
 
 /* Change Sources Button */
 #edit-btn {
@@ -128,4 +142,31 @@ input[type="checkbox"] {
 
 #edit-btn:hover {
   background-color: #2a3f57;
+}
+#info-box-left {
+  position: fixed;
+  top: 15px;
+  left: 20px;
+  background-color: rgba(100, 150, 255, 0.85); /* same light blue tint */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px 15px;
+  font-size: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  color: #fff;
+}
+
+#info-btn {
+  margin-top: 6px;
+  background: #4a6070;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+#info-btn:hover {
+  background: #374956;
 }
