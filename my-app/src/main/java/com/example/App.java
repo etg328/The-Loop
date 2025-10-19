@@ -15,7 +15,7 @@ public class App {
         response = SummarizeArticle.summarize(allNews);
         for (int i = 0; i < response.size(); i++){
             System.out.println(response.get(i));
-            UploadToDynamo(response.get(i));
+            UploadToDynamo.upload(response.get(i));
         }
         
 

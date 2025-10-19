@@ -23,14 +23,17 @@ public class SummarizeArticle {
     private static final int MAX_RETRIES = 3;
 
     public static ArrayList<String> summarize(ArrayList<NewsObj> allNews) {
-        if (responseNum == 1) {
-            break;
-        }
+        
         ObjectMapper mapper = new ObjectMapper();
         ArrayList<String> responseSet = new ArrayList<String>();
         
         //Response number
         int responseNum = 0;
+        
+        
+        // if (responseNum == 1) {
+        //     break;
+        // }
         
         for (int i = 0; i < allNews.size() - 5; i+= 5){    
             System.out.println("Starting at the top of the loop");
@@ -116,11 +119,11 @@ public class SummarizeArticle {
                 "Here is the source of the article: " + source5,
                 "",
                 "Please return the bullets strictly in the following format. Do not return anything other than the format:",
-                "[{title: _____, line1: _______, line2: _______, line3: _______, link: ________, source: ________},",
-                "{title: _____, line1: _______, line2: _______, line3: _______, link: ________, source: ________},",
-                "{title: _____, line1: _______, line2: _______, line3: _______, link: ________, source: ________},",
-                "{title: _____, line1: _______, line2: _______, line3: _______, link: ________, source: ________},",
-                "{title: _____, line1: _______, line2: _______, line3: _______, link: ________, source: ________}]"
+                "[{title: \"_____\", line1: \"_____\", line2: \"_____\", line3: \"_____\", link: \"_____\", source: \"_____\"},",
+                "{title: \"_____\", line1: \"_____\", line2: \"_____\", line3: \"_____\", link: \"_____\", source: \"_____\"},",
+                "{title: \"_____\", line1: \"_____\", line2: \"_____\", line3: \"_____\", link: \"_____\", source: \"_____\"},",
+                "{title: \"_____\", line1: \"_____\", line2: \"_____\", line3: \"_____\", link: \"_____\", source: \"_____\"},",
+                "{title: \"_____\", line1: \"_____\", line2: \"_____\", line3: \"_____\", link: \"_____\", source: \"_____\"}]"
             );
 
         // Build request body
@@ -188,6 +191,7 @@ public class SummarizeArticle {
             e.printStackTrace();
             responseSet.add("Modle invoke error error");
         }
+        
         }
         return responseSet;
     }
