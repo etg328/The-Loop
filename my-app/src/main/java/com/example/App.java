@@ -9,10 +9,18 @@ import com.example.scraper.NewsObj;
 public class App {
     public static void main(String[] args) {
         ArrayList<NewsObj> allNews = new ArrayList<>();
-        
+        ArrayList<String> response = new ArrayList<>();
         allNews = runScraper.run();
         System.out.println("Calling Claude 3.5 Sonnet model via Amazon Bedrock...");
-        for (int i = 0; i < allNews.size(); i++){
+        response = SummarizeArticle.summarize(allNews);
+        for (int i = 0; i < response.size(); i++){
+            System.out.println(response.get(i));
+            UploadToDynamo(response.get(i));
+        }
+        
+
+
+        /**for (int i = 0; i < allNews.size(); i++){
 
 
             String title = (allNews.get(i)).getTitle();
@@ -23,11 +31,11 @@ public class App {
             String response = SummarizeArticle.summarize(title, desc, link, source);
             System.out.println(response);
             try{
-                Thread.sleep(54000);
+                Thread.sleep(56000);
             }
             catch(InterruptedException e){
                 e.printStackTrace();
-            }
-        }
+            } 
+        } */
     }
 }
