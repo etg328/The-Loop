@@ -1,4 +1,4 @@
-package com.example.webscraper;
+package com.example.scraper;
 public class NewsObj {
     private final String title;
     private final String desc;

@@ -1,4 +1,4 @@
-package com.example.webscraper;
+package com.example.scraper;
 
 import java.io.BufferedWriter;
 import java.nio.charset.StandardCharsets;
@@ -7,8 +7,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-public class Test {
-    public static void main(String[] args) {
+public class runScraper {
+    public static ArrayList<NewsObj> run() {
         // --- Configure sections/feeds for each source ---
         String[] nytSections = {
             "https://www.nytimes.com/section/us",
@@ -118,6 +118,7 @@ public class Test {
         }
 
         System.out.println("\nDone. Wrote titles to: " + outPath.toAbsolutePath());
+        return allNews;
     }
 
     private static void addAll(ArrayList<NewsObj> dest, NewsObj[] src) {
