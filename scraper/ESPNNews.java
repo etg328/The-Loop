@@ -35,7 +35,11 @@ public class ESPNNews {
 
         System.out.println("DEBUG: ESPN headlines found = " + headlineLinks.size());
 
+        int numOfObj = 0;
         for (Element a : headlineLinks) {
+            if(numOfObj > 3){
+                break;
+            }
             String title = textOrNull(a);
             if (isBlank(title)) continue;
 
@@ -44,8 +48,8 @@ public class ESPNNews {
             if (href.startsWith("/")) href = "https://www.espn.com" + href;
 
             String desc = fetchArticleBody(href); // full article text (your test won’t print it)
-            results.add(new NewsObj(title, desc, href));
-
+            results.add(new NewsObj(title, desc, href, "ESPN"));
+            numOfObj++;
             Thread.sleep(350);
         }
 

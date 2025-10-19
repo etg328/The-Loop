@@ -53,7 +53,7 @@ public class APNews {
             // Fetch the full article text
             String desc = fetchArticleBody(href);
 
-            results.add(new NewsObj(title, desc, href));
+            results.add(new NewsObj(title, desc, href,"AP"));
             Thread.sleep(400); // small delay for politeness
         }
 

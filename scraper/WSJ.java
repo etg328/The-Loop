@@ -22,7 +22,7 @@ public class WSJ {
         // Fetch the RSS XML and parse it
         Document feed = Jsoup.connect(feedUrl)
                 .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
-                .timeout(20000)
+                .timeout(2000)
                 .ignoreContentType(true)
                 .parser(Parser.xmlParser()) // XML mode for RSS
                 .get();
@@ -31,14 +31,19 @@ public class WSJ {
         Elements items = feed.select("rss > channel > item");
         System.out.println("DEBUG: Found " + items.size() + " items in feed");
 
+        int numOfObj = 0;
         for (Element item : items) {
+            if(numOfObj >4){
+                break;
+            }
             String title = textOrNull(item.selectFirst("title"));
             String link  = textOrNull(item.selectFirst("link"));
             String desc  = textOrNull(item.selectFirst("description")); // short summary
 
             if (isBlank(title) || isBlank(link)) continue;
 
-            results.add(new NewsObj(title, nullToEmpty(desc), link));
+            results.add(new NewsObj(title, nullToEmpty(desc), link, "WSJ"));
+            numOfObj++;
         }
 
         System.out.println("DEBUG: Built " + results.size() + " NewsObj items from " + feedUrl);

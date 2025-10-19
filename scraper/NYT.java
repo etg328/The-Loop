@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NYT {
-    private static final int MAX_PAGES = 2; // scrape up to 10 pages
+    private static final int MAX_PAGES = 1; // scrape up to 10 pages
 
     public static NewsObj[] getNews(String sectionUrl) throws Exception {
         var results = new ArrayList<NewsObj>();
@@ -27,7 +27,7 @@ public class NYT {
                 Document doc = Jsoup.connect(url)
                         .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
                         .referrer("https://www.google.com")
-                        .timeout(20000)
+                        .timeout(2000)
                         .get();
 
                 // Typical card container: #stream-panel > div > ol > li
@@ -36,8 +36,11 @@ public class NYT {
                     System.out.println("No articles found on page " + page + " — stopping this section.");
                     break;
                 }
-
+                int numOfObj = 0;
                 for (Element li : lis) {
+                    if(numOfObj > 4){
+                        break;
+                    }
                     Element article = li.selectFirst("article");
                     if (article == null) continue;
 
@@ -55,8 +58,8 @@ public class NYT {
                     // Blurb/description: the short paragraph next to the headline
                     Element descEl = article.selectFirst("p.css-1pga48a.e15t083i1, p.css-1pga48a");
                     String desc = textOrNull(descEl);
-
-                    results.add(new NewsObj(title, nullToEmpty(desc), href));
+                        results.add(new NewsObj(title, nullToEmpty(desc), href, "NYT"));
+                    numOfObj++;
                 }
 
                 pagesRead++;
