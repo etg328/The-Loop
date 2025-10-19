@@ -38,7 +38,7 @@ public class WSJ {
 
             if (isBlank(title) || isBlank(link)) continue;
 
-            results.add(new NewsObj(title, nullToEmpty(desc), link));
+            results.add(new NewsObj(title, nullToEmpty(desc), link, "WSJ"));
         }
 
         System.out.println("DEBUG: Built " + results.size() + " NewsObj items from " + feedUrl);

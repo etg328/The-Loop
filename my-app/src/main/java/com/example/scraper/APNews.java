@@ -42,7 +42,11 @@ public class APNews {
 
         System.out.println("DEBUG: Found " + cards.size() + " article cards in section.");
 
+        int numOfObj = 0;
         for (Element a : cards) {
+            if(numOfObj> 4){
+                break;
+            }
             String title = textOrNull(a.selectFirst(".PagePromoContentIcons-text"));
             if (isBlank(title)) title = textOrNull(a);
             if (isBlank(title)) continue;
@@ -53,7 +57,8 @@ public class APNews {
             // Fetch the full article text
             String desc = fetchArticleBody(href);
 
-            results.add(new NewsObj(title, desc, href));
+            results.add(new NewsObj(title, desc, href, "AP"));
+            numOfObj++;
             Thread.sleep(400); // small delay for politeness
         }
 

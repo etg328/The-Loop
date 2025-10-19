@@ -56,7 +56,7 @@ public class NYT {
                     Element descEl = article.selectFirst("p.css-1pga48a.e15t083i1, p.css-1pga48a");
                     String desc = textOrNull(descEl);
 
-                    results.add(new NewsObj(title, nullToEmpty(desc), href));
+                    results.add(new NewsObj(title, nullToEmpty(desc), href, "NYT"));
                 }
 
                 pagesRead++;
