@@ -19,7 +19,7 @@ public class SummarizeArticle {
     private static final String MODEL_ID = "anthropic.claude-3-5-sonnet-20240620-v1:0";
     private static final int MAX_RETRIES = 3;
 
-    public static void summarize(String title, String desc, String link, String source) {
+    public static String summarize(String title, String desc, String link, String source) {
         ObjectMapper mapper = new ObjectMapper();
 
         // Build the full text prompt dynamically
@@ -78,8 +78,7 @@ public class SummarizeArticle {
                         }
                     }
 
-                    System.out.println("Model response:\n" + outputText);
-                    break;
+                    return(outputText);
 
                 } catch (ThrottlingException e) {
                     attempt++;
@@ -89,7 +88,7 @@ public class SummarizeArticle {
                 } catch (BedrockRuntimeException e) {
                     System.err.println("Bedrock error: " + e.getMessage());
                     e.printStackTrace();
-                    break;
+                    return ("error");
                 }
             }
 
@@ -100,6 +99,8 @@ public class SummarizeArticle {
         } catch (Exception e) {
             System.err.println("Error invoking model: " + e.getMessage());
             e.printStackTrace();
+            return("error");
         }
+        return ("error");
     }
 }

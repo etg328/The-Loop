@@ -33,7 +33,7 @@ public class WSJ {
 
         int numOfObj = 0;
         for (Element item : items) {
-            if(numOfObj >5){
+            if(numOfObj >3){
                 break;
             }
             String title = textOrNull(item.selectFirst("title"));
@@ -42,7 +42,7 @@ public class WSJ {
 
             if (isBlank(title) || isBlank(link)) continue;
 
-            results.add(new NewsObj(title, nullToEmpty(desc), link, "WSJ"));
+            results.add(new NewsObj(title, nullToEmpty(desc), link, "Wall Street Journal"));
             numOfObj++;
         }
 

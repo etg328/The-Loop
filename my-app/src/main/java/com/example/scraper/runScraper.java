@@ -19,15 +19,13 @@ public class runScraper {
         String[] apSections = {
             "https://apnews.com/hub/world-news",
             "https://apnews.com/hub/us-news",
-            "https://apnews.com/hub/business",
-            "https://apnews.com/hub/science"
+            "https://apnews.com/hub/business"
         };
 
         String[] espnSections = {
             "https://www.espn.com/",
             "https://www.espn.com/nfl/",
-            "https://www.espn.com/nba/",
-            "https://www.espn.com/mlb/"
+            "https://www.espn.com/nba/"
         };
 
         String[] wsjFeeds = {

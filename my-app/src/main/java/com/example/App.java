@@ -20,9 +20,10 @@ public class App {
             String link = (allNews.get(i)).getLink();
             String source = (allNews.get(i)).getSource();
             
-            SummarizeArticle.summarize(title, desc, link, source);
+            String response = SummarizeArticle.summarize(title, desc, link, source);
+            System.out.println(response);
             try{
-                Thread.sleep(52000);
+                Thread.sleep(54000);
             }
             catch(InterruptedException e){
                 e.printStackTrace();

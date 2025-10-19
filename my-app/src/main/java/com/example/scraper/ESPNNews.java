@@ -36,7 +36,7 @@ public class ESPNNews {
         System.out.println("DEBUG: ESPN headlines found = " + headlineLinks.size());
         int numOfObj = 0;
         for (Element a : headlineLinks) {
-            if(numOfObj > 3){
+            if(numOfObj > 2){
                 break;
             }
             String title = textOrNull(a);
