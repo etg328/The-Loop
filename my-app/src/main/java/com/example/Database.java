@@ -7,6 +7,8 @@ import software.amazon.awssdk.services.dynamodb.model.DynamoDbException;
 import software.amazon.awssdk.services.dynamodb.model.QueryRequest;
 import software.amazon.awssdk.services.dynamodb.model.QueryResponse;
 import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Before running this Java V2 code example, set up your development
@@ -21,7 +23,7 @@ import java.util.HashMap;
  * Enhanced Client. See the EnhancedQueryRecords example.
  */
 public class Database {
-    public static QueryResponse get(String source) {
+    public static ArrayList<Article> get(String source) {
         final String usage = """
 
                 Usage:
@@ -51,7 +53,17 @@ public class Database {
         QueryResponse response = queryTable(ddb, tableName, partitionKeyName, partitionKeyVal, partitionAlias);
         ddb.close();
 
-        return response;
+        ArrayList<Article> list = new ArrayList<>();
+        for (Map<String, AttributeValue> map : response.items()) {
+            Article article = new Article(
+                map.get("title").s(),
+                map.get("text").s(),
+                map.get("link").s()
+            );
+            list.add(article);
+        }
+
+        return list;
     }
 
     public static QueryResponse queryTable(DynamoDbClient ddb, String tableName, String partitionKeyName, String partitionKeyVal,

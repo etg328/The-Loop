@@ -19,4 +19,12 @@ public class Article {
     public String getLink() {
         return link;
     }
+    @Override
+    public String toString() {
+        return "Article{" +
+                "title='" + title + '\'' +
+                ", text='" + text + '\'' +
+                ", link='" + link + '\'' +
+                '}';
+    }
 }
