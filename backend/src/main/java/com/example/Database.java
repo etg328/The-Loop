@@ -60,7 +60,9 @@ public class Database {
                 Article article = new Article(
                     map.get("source").s(),
                     map.get("title").s(),
-                    map.get("text").s(),
+                    map.get("line1").s(),
+                    map.get("line2").s(),
+                    map.get("line3").s(),
                     map.get("link").s()
                 );
                 list.add(article);
