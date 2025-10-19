@@ -1,0 +1,102 @@
+// mockDatabase.js
+
+const mockDatabase = {
+  "New York Times": [
+    {
+      title: "The Mad Scrapper Strikes Again",
+      line1: "New York Times Admins in dismay",
+      line2: "New York Times articles being pirated at in INSANE rate",
+      line3: "$10,000 bounty",
+      link: "https://www.google.com"
+    },
+    {
+      title: "Global Markets React to Fed Decision",
+      line1: "Rates drop by 5%",
+      line2: "Expect increase in gas prices",
+      line3: "This is the next line",
+      link: "https://www.google.com"
+    },
+    {
+      title: "Tech Giants Report Record Earnings",
+      line1: "Apple and Microsoft exceed Q3 expectations",
+      line2: "Analysts predict continued growth into 2026",
+      line3: "This is the next line",
+      link: "https://www.google.com"
+    },
+    {
+      title: "Nick Voswinckle crashes out",
+      line1: "The Sauquon Scrappy Scrapper can not scrape",
+      line2: "We are not going to win the hackathon",
+      line3: "This is the next line",
+      link: "https://www.google.com"
+    }
+  ],
+  "Wall Street Journal": [
+    {
+      title: "Oil Prices Climb as Demand Rebounds",
+      line1: "U.S. production struggles to keep up",
+      line2: "Investors eye OPEC’s next move",
+      line3: "This is the next line",
+      link: "https://www.google.com"
+    },
+    {
+      title: "Manufacturing Sector Hits Record High",
+      line1: "Strong output across Midwest",
+      line2: "Supply chains continue gradual recovery",
+      line3: "This is the next line",
+      link: "https://www.google.com"
+    },
+    {
+      title: "Owen is a guy",
+      line1: "The Sauquon Scrappy Scrapper can not scrape",
+      line2: "We are not going to win the hackathon",
+      line3: "This is the next line",
+      link: "https://www.cnn.com/2022/01/19/tennis/cristiano-ronaldo-siu-celebrations-australian-open-spt-intl"
+    }
+  ],
+  "ESPN": [
+    {
+      title: "Lakers Triumph in Overtime Thriller",
+      line1: "LeBron leads with 32 points",
+      line2: "Coach praises team resilience",
+      line3: "This is the next line",
+      link: "https://www.google.com"
+    },
+    {
+      title: "NFL Week 6 Power Rankings Released",
+      line1: "Eagles reclaim top spot after big win",
+      line2: "Analysts debate playoff favorites",
+      line3: "This is the next line",
+      link: "https://www.google.com"
+    }
+  ],
+  "BBC": [
+    {
+      title: "Nick able to scrape the BBC",
+      line1: "Owen loves BBC",
+      line2: "Nick Cant handle the BBC",
+      line3: "Ethan thinks the BBC is small",
+      link: "https://www.google.com"
+    }
+  ]
+};
+
+// Simulate backend API call
+export function fetchArticles(sources) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      let results = [];
+      sources.forEach(source => {
+        if (mockDatabase[source]) {
+          results = results.concat(
+            mockDatabase[source].map(article => ({
+              source,
+              ...article
+            }))
+          );
+        }
+      });
+      resolve(results);
+    }, 500);
+  });
+}
