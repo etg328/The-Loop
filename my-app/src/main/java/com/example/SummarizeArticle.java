@@ -6,6 +6,7 @@ import software.amazon.awssdk.services.bedrockruntime.BedrockRuntimeClient;
 import software.amazon.awssdk.services.bedrockruntime.model.InvokeModelRequest;
 import software.amazon.awssdk.services.bedrockruntime.model.InvokeModelResponse;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -23,24 +24,29 @@ public class SummarizeArticle {
         Region region = Region.US_EAST_1;
         String modelId = "anthropic.claude-3-sonnet-20240229-v1:0";
 
-        // Correct prompt structure
-        String prompt = """
-        System: You are a helpful assistant that summarizes articles in exactly three bullet points.
-        "Human: Summarize the following article:
+        // Top-level system prompt
+        JsonObject payload = new JsonObject();
 
-        Article:
-        %s
-        "
-        """.formatted(article);
+        // Top-level system prompt
+        payload.addProperty("system", "You are a helpful assistant that summarizes news articles in exactly three bullet points.");
+
+        // Anthropic version
+        payload.addProperty("anthropic_version", "2023-10-01");
+
+        // Messages array (user messages only)
+        JsonArray messages = new JsonArray();
+        JsonObject userMessage = new JsonObject();
+        userMessage.addProperty("role", "user");
+        userMessage.addProperty("content", "Summarize the following article:\n\n" + article);
+        messages.add(userMessage);
+
+        payload.add("messages", messages);
+        payload.addProperty("max_tokens", 300);
+        payload.addProperty("temperature", 0.3);
 
         try (BedrockRuntimeClient client = BedrockRuntimeClient.builder()
                 .region(region)
                 .build()) {
-
-            JsonObject payload = new JsonObject();
-            payload.addProperty("prompt", prompt);
-            payload.addProperty("max_tokens_to_sample", 300);
-            payload.addProperty("temperature", 0.3);
 
             InvokeModelRequest request = InvokeModelRequest.builder()
                     .modelId(modelId)
@@ -50,11 +56,16 @@ public class SummarizeArticle {
             InvokeModelResponse response = client.invokeModel(request);
             String responseBody = response.body().asUtf8String();
 
+            // The response structure may differ depending on the model
             JsonObject json = JsonParser.parseString(responseBody).getAsJsonObject();
-            String summary = json.get("completion").getAsString();
-
-            System.out.println("Summary:");
-            System.out.println(summary);
+            JsonArray outputMessages = json.getAsJsonArray("messages");
+            if (outputMessages != null && outputMessages.size() > 0) {
+                String summary = outputMessages.get(0).getAsJsonObject().get("content").getAsString();
+                System.out.println("Summary:");
+                System.out.println(summary);
+            } else {
+                System.out.println("No output returned from model.");
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
