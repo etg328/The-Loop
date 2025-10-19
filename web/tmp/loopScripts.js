@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
     default: "https://coolbackgrounds.imgix.net/39sOStld2OCyNn3HmCpqco/21d339122a7cb417c83e6ebdc347ea5c/sea-edge-79ab30e2.png?w=3840&q=60&auto=format,compress",
     beach: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
     city: "https://images.unsplash.com/photo-1505761671935-60b3a7427bad",
-    secret: "https://assets.goal.com/images/v3/bltb7d9998f06c980a4/dfdade2bc59127c4e1c3e9ccd5b28d4f07ad7b06.jpg?auto=webp&format=pjpg&width=3840&quality=60",
+    secret: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/17/a2/f4/1c/stadio-santiago-bernabeu.jpg?w=900&h=500&s=1",
   };
 
   backgroundSelect.addEventListener("change", () => {
